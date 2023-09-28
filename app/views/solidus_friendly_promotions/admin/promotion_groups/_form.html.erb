@@ -1,0 +1,13 @@
+<%= render partial: 'spree/shared/error_messages', locals: { target: @promotion_group } %>
+
+<div class='row' data-controller="sortable" >
+  <div class='col-4'>
+    <%= f.field_container :name do %>
+      <%= f.label :name %>
+      <%= f.text_field :name, class: 'fullwidth', data: { sortable_handle: "" } %>
+
+      <%= f.label :position %>
+      <%= f.number_field :position, class: 'fullwidth' %>
+    <% end %>
+  </div>
+</div>

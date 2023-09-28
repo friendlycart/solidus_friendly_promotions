@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :friendly_promotion, class: 'SolidusFriendlyPromotions::Promotion' do
-    name { 'Promo' }
+  factory :friendly_promotion, class: "SolidusFriendlyPromotions::Promotion" do
+    name { "Promo" }
 
     transient do
       code { nil }
+      # promotion_group { "Default" }
     end
     before(:create) do |promotion, evaluator|
       if evaluator.code
@@ -68,7 +69,7 @@ FactoryBot.define do
       after(:create) do |promotion, evaluator|
         rule = SolidusFriendlyPromotions::Rules::ItemTotal.create!(
           promotion: promotion,
-          preferred_operator: 'gte',
+          preferred_operator: "gte",
           preferred_amount: evaluator.item_total_threshold_amount
         )
         promotion.rules << rule
@@ -79,12 +80,16 @@ FactoryBot.define do
     trait :with_first_order_rule do
       after(:create) do |promotion, _evaluator|
         rule = SolidusFriendlyPromotions::Rules::FirstOrder.create!(
-          promotion: promotion,
+          promotion: promotion
         )
         promotion.rules << rule
         promotion.save!
       end
     end
     factory :friendly_promotion_with_first_order_rule, traits: [:with_first_order_rule]
+
+    trait :in_pre_group do
+      association :friendly_promotion_group, "Pre"
+    end
   end
 end

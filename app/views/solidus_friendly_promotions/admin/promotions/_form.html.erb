@@ -24,6 +24,13 @@
               { class: 'custom-select fullwidth' })
             %>
           <% end %>
+
+          <%= f.field_container :group do %>
+            <%= f.label :promotion_group_id, SolidusFriendlyPromotions::PromotionGroup.model_name.human %><br>
+            <%=
+              f.collection_select(:friendly_promotion_group_id, SolidusFriendlyPromotions::PromotionGroup.all, :id, :name, { }, { class: 'custom-select fullwidth' })
+            %>
+          <% end %>
         </div>
       </div>
     </div>
