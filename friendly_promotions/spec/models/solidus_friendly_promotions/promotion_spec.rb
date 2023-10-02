@@ -8,6 +8,20 @@ RSpec.describe SolidusFriendlyPromotions::Promotion, type: :model do
   it { is_expected.to belong_to(:category).optional }
   it { is_expected.to have_many :rules }
 
+  describe "lane" do
+    it { is_expected.to respond_to(:lane) }
+
+    it "is default be default" do
+      expect(subject.lane).to eq("default")
+    end
+  end
+
+  describe ".ordered_lanes" do
+    subject { described_class.ordered_lanes }
+
+    it { is_expected.to eq({"pre" => 0, "default" => 1, "post" => 2}) }
+  end
+
   describe "validations" do
     before do
       @valid_promotion = described_class.new name: "A promotion"
