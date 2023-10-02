@@ -7,39 +7,29 @@ module SolidusFriendlyPromotions
     end
 
     def call
-      all_order_discounts = SolidusFriendlyPromotions.config.discounters.filter_map do |discounter|
-        discounter.new(order).call
+      discountable_order = FriendlyPromotionDiscounter.new(order).call
+
+      discountable_order.line_items.each do |discountable_line_item|
+        update_adjustments(discountable_line_item.line_item, discountable_line_item.discounts)
       end
 
-      @order.line_items.each do |item|
-        all_line_item_discounts = all_order_discounts.flat_map(&:line_item_discounts)
-        item_discounts = all_line_item_discounts.select { |element| element.item == item }
-        chosen_item_discounts = SolidusFriendlyPromotions.config.discount_chooser_class.new(item).call(item_discounts)
-        update_adjustments(item, chosen_item_discounts)
+      discountable_order.shipments.each do |discountable_shipment|
+        update_adjustments(discountable_shipment.shipment, discountable_shipment.discounts)
       end
 
-      @order.shipments.each do |item|
-        all_shipment_discounts = all_order_discounts.flat_map(&:shipment_discounts)
-        item_discounts = all_shipment_discounts.select { |element| element.item == item }
-        chosen_item_discounts = SolidusFriendlyPromotions.config.discount_chooser_class.new(item).call(item_discounts)
-        update_adjustments(item, chosen_item_discounts)
-      end
-
-      @order.shipments.flat_map(&:shipping_rates).each do |item|
-        all_item_discounts = all_order_discounts.flat_map(&:shipping_rate_discounts)
-        item_discounts = all_item_discounts.select { |element| element.item == item }
-        chosen_item_discounts = SolidusFriendlyPromotions.config.discount_chooser_class.new(item).call(item_discounts)
-        item.discounts = chosen_item_discounts.map do |discount|
+      discountable_order.shipments.flat_map(&:shipping_rates).each do |discountable_shipping_rate|
+        spree_shipping_rate = discountable_shipping_rate.shipping_rate
+        spree_shipping_rate.discounts = discountable_shipping_rate.discounts.map do |discount|
           SolidusFriendlyPromotions::ShippingRateDiscount.new(
-            shipping_rate: item,
+            shipping_rate: spree_shipping_rate,
             amount: discount.amount,
             label: discount.label
           )
         end
       end
 
-      @order.promo_total = (order.line_items + order.shipments).sum(&:promo_total)
-      @order
+      order.promo_total = (order.line_items + order.shipments).sum(&:promo_total)
+      order
     end
 
     private
