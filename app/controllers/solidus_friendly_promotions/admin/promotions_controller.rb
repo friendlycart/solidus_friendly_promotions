@@ -2,7 +2,7 @@
 
 module SolidusFriendlyPromotions
   module Admin
-    class PromotionsController < ::Spree::Admin::ResourceController
+    class PromotionsController < BaseController
       before_action :load_data
 
       helper "solidus_friendly_promotions/admin/promotion_rules"
