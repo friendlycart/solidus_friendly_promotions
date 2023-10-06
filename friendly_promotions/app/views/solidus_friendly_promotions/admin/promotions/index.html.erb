@@ -1,9 +1,12 @@
-<% admin_breadcrumb(plural_resource_name(Spree::Promotion)) %>
+<% admin_breadcrumb(plural_resource_name(SolidusFriendlyPromotions::Promotion)) %>
 
 <% content_for :page_actions do %>
-  <% if can? :create, Spree::Promotion %>
+  <% if can? :create, SolidusFriendlyPromotions::Promotion %>
     <li>
-      <%= link_to t('spree.new_promotion'), spree.new_admin_promotion_path, class: 'btn btn-primary' %>
+      <%= link_to t('solidus_friendly_promotions.new_promotion'), solidus_friendly_promotions.new_admin_promotion_path, class: 'btn btn-primary' %>
+    </li>
+    <li>
+      <%= link_to t('solidus_friendly_promotions.legacy_promotions'), spree.admin_promotions_path, class: 'btn btn-primary' %>
     </li>
   <% end %>
 <% end %>
@@ -69,13 +72,13 @@
   <table class="index">
     <thead>
       <tr>
-        <th><%= Spree::Promotion.human_attribute_name(:name) %></th>
-        <th><%= Spree::Promotion.human_attribute_name(:code) %></th>
-        <th><%= Spree::Promotion.human_attribute_name(:status) %></th>
-        <th><%= Spree::Promotion.human_attribute_name(:usage_limit) %></th>
-        <th><%= Spree::Promotion.human_attribute_name(:uses) %></th>
-        <th><%= Spree::Promotion.human_attribute_name(:starts_at) %></th>
-        <th><%= Spree::Promotion.human_attribute_name(:expires_at) %></th>
+        <th><%= SolidusFriendlyPromotions::Promotion.human_attribute_name(:name) %></th>
+        <th><%= SolidusFriendlyPromotions::Promotion.human_attribute_name(:code) %></th>
+        <th><%= SolidusFriendlyPromotions::Promotion.human_attribute_name(:status) %></th>
+        <th><%= SolidusFriendlyPromotions::Promotion.human_attribute_name(:usage_limit) %></th>
+        <th><%= SolidusFriendlyPromotions::Promotion.human_attribute_name(:uses) %></th>
+        <th><%= SolidusFriendlyPromotions::Promotion.human_attribute_name(:starts_at) %></th>
+        <th><%= SolidusFriendlyPromotions::Promotion.human_attribute_name(:expires_at) %></th>
         <th class="actions"></th>
       </tr>
     </thead>
@@ -118,7 +121,7 @@
 <% else %>
   <div class="no-objects-found">
     <%= render 'spree/admin/shared/no_objects_found',
-                 resource: Spree::Promotion,
+                 resource: SolidusFriendlyPromotions::Promotion,
                  new_resource_url: new_object_url %>
   </div>
 <% end %>
