@@ -27,6 +27,18 @@ Spree::Backend::Config.configure do |config|
             label: :promotion_categories,
             url: -> { SolidusFriendlyPromotions::Engine.routes.url_helpers.admin_promotion_categories_path },
             condition: -> { can?(:admin, SolidusFriendlyPromotions::PromotionCategory) }
+          ),
+          Spree::BackendConfiguration::MenuItem.new(
+            label: :legacy_promotions,
+            condition: -> { can?(:admin, Spree::Promotion && Spree::Promotion.any?) },
+            url: -> { Spree::Core::Engine.routes.url_helpers.admin_promotions_path },
+            match_path: '/admin/promotions/'
+          ),
+          Spree::BackendConfiguration::MenuItem.new(
+            label: :legacy_promotion_categories,
+            condition: -> { can?(:admin, Spree::PromotionCategory && Spree::Promotion.any?) },
+            url: -> { Spree::Core::Engine.routes.url_helpers.admin_promotion_categories_path },
+            match_path: '/admin/promotion_categories/'
           )
         ]
       )
@@ -34,8 +46,8 @@ Spree::Backend::Config.configure do |config|
       Spree::BackendConfiguration::MenuItem.new(
         [:promotions, :promotion_categories],
         "bullhorn",
-        partial: "spree/admin/shared/promotion_sub_menu",
-        condition: -> { can?(:admin, Spree::Promotion) },
+        partial: "solidus_friendly_promotions/admin/shared/promotion_sub_menu",
+        condition: -> { can?(:admin, SolidusFriendlyPromotions::Promotion) },
         url: -> { SolidusFriendlyPromotions::Engine.routes.url_helpers.admin_promotions_path },
         position: 2
       )
