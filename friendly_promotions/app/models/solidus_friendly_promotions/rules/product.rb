@@ -7,6 +7,8 @@ module SolidusFriendlyPromotions
     # either come from assigned product group or are assingned directly to
     # the rule.
     class Product < PromotionRule
+      include LineItemApplicableOrderRule
+
       has_many :products_promotion_rules,
         dependent: :destroy,
         foreign_key: :promotion_rule_id,
@@ -28,11 +30,7 @@ module SolidusFriendlyPromotions
         products
       end
 
-      def applicable?(promotable)
-        promotable.is_a?(Spree::Order)
-      end
-
-      def eligible?(order, _options = {})
+      def order_eligible?(order)
         return true if eligible_products.empty?
 
         case preferred_match_policy
@@ -62,16 +60,19 @@ module SolidusFriendlyPromotions
         eligibility_errors.empty?
       end
 
+      def line_item_eligible?(line_item, _options = {})
+        # The order level eligibility check happens first, and if none of the products
+        # are in the order, then no line items should be available to check.
+        raise "This should not happen" if preferred_match_policy == "none"
+        product_ids.include?(line_item.variant.product_id)
+      end
+
       def product_ids_string
         product_ids.join(",")
       end
 
       def product_ids_string=(product_ids)
         self.product_ids = product_ids.to_s.split(",").map(&:strip)
-      end
-
-      def updateable?
-        true
       end
 
       private
