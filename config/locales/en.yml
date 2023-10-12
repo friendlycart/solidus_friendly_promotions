@@ -157,10 +157,13 @@ en:
         description: Only one use per user
       solidus_friendly_promotions/rules/option_value:
         description: Order includes specified product(s) with matching option value(s)
+        preferred_line_item_applicable: Should also apply to line items
       solidus_friendly_promotions/rules/line_item_option_value:
         description: Line Item has specified product with matching option value
       solidus_friendly_promotions/rules/product:
         description: Order includes specified product(s)
+        line_item_level_description: 'Line item matches the specified products:'
+        preferred_line_item_applicable: Should also apply to line items
       solidus_friendly_promotions/rules/line_item_product:
         description: Line item matches specified product(s)
         preferred_match_policy: Match Policy
@@ -168,6 +171,7 @@ en:
         description: Available only to the specified stores
       solidus_friendly_promotions/rules/taxon:
         description: Order includes products with specified taxon(s)
+        preferred_line_item_applicable: Should also apply to line items
       solidus_friendly_promotions/rules/line_item_taxon:
         description: Line Item has product with specified taxon(s)
         preferred_match_policy: Match Policy

@@ -3,16 +3,16 @@
 module SolidusFriendlyPromotions
   module Rules
     class OptionValue < PromotionRule
+      include LineItemApplicableOrderRule
+
       preference :eligible_values, :hash
 
-      def applicable?(promotable)
-        promotable.is_a?(Spree::Order)
+      def order_eligible?(order)
+        order.line_items.any? { |item| line_item_eligible?(item) }
       end
 
-      def eligible?(order, _options = {})
-        order.line_items.any? do |item|
-          LineItemOptionValue.new(preferred_eligible_values: preferred_eligible_values).eligible?(item)
-        end
+      def line_item_eligible?(line_item)
+        LineItemOptionValue.new(preferred_eligible_values: preferred_eligible_values).eligible?(line_item)
       end
 
       def preferred_eligible_values
