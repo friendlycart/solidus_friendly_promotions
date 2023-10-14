@@ -28,6 +28,11 @@ module SolidusFriendlyPromotions
         new_promotion.actions = promotion.actions.flat_map do |old_promotion_action|
           generate_new_promotion_actions(old_promotion_action)
         end
+        new_promotion.codes = promotion.codes.map do |old_code|
+          SolidusFriendlyPromotions::PromotionCode.new(
+            old_code.attributes
+          )
+        end
         new_promotion.save!
       end
     end
