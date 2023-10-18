@@ -70,12 +70,17 @@ module SolidusFriendlyPromotions
       def handle_present_promotion
         return promotion_usage_limit_exceeded if promotion.usage_limit_exceeded? || promotion_code.usage_limit_exceeded?
         return promotion_applied if promotion_exists_on_order?(order, promotion)
+
+        # Try applying this promotion, with no effects
+        SolidusFriendlyPromotions::FriendlyPromotionDiscounter.new(order, [promotion]).call
+        success_code = promotion.eligibility_errors.any? ? :connected_but_promotion_ineligible : :coupon_code_applied
+
         order.friendly_order_promotions.create!(
           promotion: promotion,
           promotion_code: promotion_code
         )
         order.recalculate
-        set_success_code :coupon_code_applied
+        set_success_code success_code
       end
 
       def set_promotion_eligibility_error_code(promotion)
