@@ -4,9 +4,9 @@ module SolidusFriendlyPromotions
   class FriendlyPromotionDiscounter
     attr_reader :order, :promotions
 
-    def initialize(order)
+    def initialize(order, promotions)
       @order = order
-      @promotions = PromotionLoader.new(order: order).call
+      @promotions = promotions
     end
 
     def call
