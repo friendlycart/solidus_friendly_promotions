@@ -21,5 +21,31 @@ module SolidusFriendlyPromotions
     def for(promotion)
       results_by_promotion[promotion]
     end
+
+    def success?(promotion)
+      results_for_promotion = self.for(promotion)
+      return true unless results_for_promotion
+      promotion.actions.any? do |action|
+        action.relevant_rules.all? do |rule|
+          results_for_promotion[rule].present? &&
+            results_for_promotion[rule].any?(&:success)
+        end
+      end
+    end
+
+    def errors_for(promotion)
+      results_for_promotion = self.for(promotion)
+      return [] unless results_for_promotion
+      results_for_promotion.map do |rule, results|
+        next if results.any?(&:success)
+        results.detect { |r| !r.success }&.message
+      end.compact
+    end
+
+    private
+
+    def item_results_eligible?(klass, resultset)
+      resultset[klass].nil? || resultset[klass].any? { |result| result.success }
+    end
   end
 end
