@@ -2,14 +2,14 @@
 
 module SolidusFriendlyPromotions
   class ItemDiscounter
-    attr_reader :promotions
+    attr_reader :promotions, :eligibility_errors
 
-    def initialize(promotions:)
+    def initialize(promotions:, eligibility_errors: nil)
       @promotions = promotions
     end
 
-    def call(item)
-      eligible_promotions = PromotionEligibility.new(
+    def call(item, eligibility_errors: nil)
+      eligible_promotions = PromotionsEligibility.new(
         promotable: item,
         possible_promotions: promotions
       ).call

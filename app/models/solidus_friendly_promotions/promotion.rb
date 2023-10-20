@@ -30,6 +30,9 @@ module SolidusFriendlyPromotions
       joins(:actions).distinct
     end
 
+    attr_accessor :eligibility_errors
+    attr_accessor :coupon_code_eligibility_errors ##:code_eligibility
+
     enum lane: SolidusFriendlyPromotions.config.preferred_lanes
 
     def self.human_enum_name(enum_name, enum_value)
