@@ -154,5 +154,27 @@ RSpec.describe SolidusFriendlyPromotions::FriendlyPromotionDiscounter do
         expect(discounter.eligibility_results.errors_for(promotion)).to be_empty
       end
     end
+
+    context "with an ineligible order-level rule" do
+      let(:mug) { create(:product) }
+      let(:order_rule) { SolidusFriendlyPromotions::Rules::NthOrder.new(preferred_nth_order: 2) }
+      let(:line_item_rule) { SolidusFriendlyPromotions::Rules::LineItemProduct.new(products: [mug]) }
+      let(:rules) { [order_rule, line_item_rule] }
+
+      it "can tell us about success" do
+        subject
+        expect(discounter.eligibility_results.success?(promotion)).to be false
+      end
+
+      it "can tell us about all the errors", :pending do
+        subject
+        expect(discounter.eligibility_results.errors_for(promotion)).to eq(
+          [
+            "This coupon code could not be applied to the cart at this time.",
+            "You need to add an applicable product before applying this coupon code."
+          ]
+        )
+      end
+    end
   end
 end
