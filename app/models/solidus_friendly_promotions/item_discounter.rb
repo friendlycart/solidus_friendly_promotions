@@ -2,16 +2,18 @@
 
 module SolidusFriendlyPromotions
   class ItemDiscounter
-    attr_reader :promotions
+    attr_reader :promotions, :collect_eligibility_results
 
-    def initialize(promotions:)
+    def initialize(promotions:, collect_eligibility_results: false)
       @promotions = promotions
+      @collect_eligibility_results = collect_eligibility_results
     end
 
     def call(item)
-      eligible_promotions = PromotionEligibility.new(
+      eligible_promotions = PromotionsEligibility.new(
         promotable: item,
-        possible_promotions: promotions
+        possible_promotions: promotions,
+        collect_eligibility_results: collect_eligibility_results
       ).call
 
       eligible_promotions.flat_map do |promotion|
