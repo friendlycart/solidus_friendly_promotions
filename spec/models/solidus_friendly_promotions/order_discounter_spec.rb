@@ -23,6 +23,11 @@ RSpec.describe SolidusFriendlyPromotions::OrderDiscounter, type: :model do
             subject.call
           }.to change { adjustable.adjustments.length }.by(1)
         end
+
+        it "does not keep the current discounts" do
+          subject.call
+          expect(adjustable.current_discounts).to be_empty
+        end
       end
 
       context "for a non-sale promotion" do
