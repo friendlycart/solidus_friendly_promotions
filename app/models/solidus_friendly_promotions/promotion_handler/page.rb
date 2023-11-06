@@ -12,12 +12,7 @@ module SolidusFriendlyPromotions
 
       def activate
         if promotion
-          active_promotions = SolidusFriendlyPromotions::PromotionLoader.new(order: order).call
-          SolidusFriendlyPromotions::FriendlyPromotionDiscounter.new(
-            order,
-            active_promotions + [promotion],
-            collect_eligibility_results: true
-          ).call
+          Spree::Config.promotion_adjuster_class.new(order, dry_run_promotion: promotion).call
           if promotion.eligibility_results.success?
             order.friendly_promotions << promotion
             order.recalculate
