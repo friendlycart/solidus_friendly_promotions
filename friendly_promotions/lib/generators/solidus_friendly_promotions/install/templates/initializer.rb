@@ -4,6 +4,10 @@
 Spree::Config.order_contents_class = "SolidusFriendlyPromotions::SimpleOrderContents"
 Spree::Config.promotion_adjuster_class = "SolidusFriendlyPromotions::FriendlyPromotionAdjuster"
 
+Rails.application.config.to_prepare do |config|
+  Spree::Order.line_item_comparison_hooks << :free_from_order_action?
+end
+
 # Replace the promotions menu from core with ours
 Spree::Backend::Config.configure do |config|
   config.menu_items = config.menu_items.map do |item|
@@ -82,6 +86,10 @@ SolidusFriendlyPromotions.configure do |config|
     "SolidusFriendlyPromotions::Actions::AdjustLineItemQuantityGroups" => [
       "SolidusFriendlyPromotions::Calculators::FlatRate",
       "SolidusFriendlyPromotions::Calculators::Percent"
+    ],
+    "SolidusFriendlyPromotions::Actions::CreateDiscountedItem" => [
+      "SolidusFriendlyPromotions::Calculators::FlatRate",
+      "SolidusFriendlyPromotions::Calculators::Percent"
     ]
   )
 
@@ -113,6 +121,7 @@ SolidusFriendlyPromotions.configure do |config|
   config.actions = [
     "SolidusFriendlyPromotions::Actions::AdjustLineItem",
     "SolidusFriendlyPromotions::Actions::AdjustLineItemQuantityGroups",
-    "SolidusFriendlyPromotions::Actions::AdjustShipment"
+    "SolidusFriendlyPromotions::Actions::AdjustShipment",
+    "SolidusFriendlyPromotions::Actions::CreateDiscountedItem"
   ]
 end
