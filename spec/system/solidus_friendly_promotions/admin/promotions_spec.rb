@@ -7,18 +7,20 @@ RSpec.describe "Promotions admin", type: :system do
 
   describe "#index" do
     let!(:promotion1) do
-      create(:friendly_promotion, :with_adjustable_action, name: "name1", code: "code1", path: "path1")
+      create(:friendly_promotion, :with_adjustable_action, name: "name1", code: "code1", path: "path1", lane: "pre", updated_at: 2.days.ago)
     end
     let!(:promotion2) do
-      create(:friendly_promotion, :with_adjustable_action, name: "name2", code: "code2", path: "path2")
+      create(:friendly_promotion, :with_adjustable_action, name: "name2", code: "code2", path: "path2", lane: "default", updated_at: 10.days.ago)
     end
     let!(:promotion3) do
       create(
         :friendly_promotion,
         :with_adjustable_action,
+        lane: "post",
         name: "name3",
         code: "code3",
         path: "path3",
+        updated_at: 5.days.ago,
         expires_at: Date.yesterday
       )
     end
@@ -39,11 +41,11 @@ RSpec.describe "Promotions admin", type: :system do
       )
     end
 
-    context "search" do
+    describe "search" do
       it "pages results" do
         visit solidus_friendly_promotions.admin_promotions_path(per_page: "1")
-        expect(page).to have_content(promotion3.name)
-        expect(page).not_to have_content(promotion1.name)
+        expect(page).to have_content(promotion1.name)
+        expect(page).not_to have_content(promotion3.name)
       end
 
       it "filters by name" do
@@ -64,11 +66,30 @@ RSpec.describe "Promotions admin", type: :system do
         expect(page).not_to have_content(promotion2.name)
       end
 
-      it "filters by active" do
-        visit solidus_friendly_promotions.admin_promotions_path(q: {active: true})
+      it "filters by active date" do
+        visit solidus_friendly_promotions.admin_promotions_path(q: {active: Time.current})
         expect(page).to have_content(promotion1.name)
         expect(page).to have_content(promotion2.name)
         expect(page).not_to have_content(promotion3.name)
+      end
+
+      it "filters by active the day before yesterday" do
+        visit solidus_friendly_promotions.admin_promotions_path(q: {active: 2.days.ago})
+        expect(page).to have_content(promotion1.name)
+        expect(page).to have_content(promotion2.name)
+        expect(page).to have_content(promotion3.name)
+      end
+
+      it "filters by lane" do
+        visit solidus_friendly_promotions.admin_promotions_path(q: {lane_eq: :pre})
+        expect(page).to have_content(promotion1.name)
+        expect(page).not_to have_content(promotion2.name)
+        expect(page).not_to have_content(promotion3.name)
+      end
+
+      it "sorts by updated_at by default" do
+        visit solidus_friendly_promotions.admin_promotions_path
+        expect(page.text).to match(/.*name1.*name3.*name2.*/m)
       end
     end
   end
