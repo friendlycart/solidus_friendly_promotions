@@ -8,6 +8,7 @@ module SolidusFriendlyPromotions
       before_action :validate_promotion_action_type, only: [:create, :edit]
 
       def new
+        @level = params[:level] || :line_item
         if params.dig(:promotion_action, :type)
           validate_promotion_action_type
           @promotion_action = @promotion.actions.build(type: @promotion_action_type)

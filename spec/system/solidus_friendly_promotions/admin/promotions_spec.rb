@@ -141,7 +141,7 @@ RSpec.describe "Promotions admin", type: :system do
         expect(find("#promotion_rule_preferred_amount").value).to eq("300.00")
       end
 
-      within("#new_promotion_action_promotion_#{promotion.id}") do
+      within("#new_line_item_promotion_action_promotion_#{promotion.id}") do
         click_link("New Action")
         select("Discount matching line items", from: "Type")
         select("Flat Rate", from: "Calculator type")

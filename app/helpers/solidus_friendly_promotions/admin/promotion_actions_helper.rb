@@ -9,8 +9,8 @@ module SolidusFriendlyPromotions
         options_for_select(options, promotion_action.calculator_type.to_s)
       end
 
-      def options_for_promotion_action_types(promotion_action)
-        actions = SolidusFriendlyPromotions.config.actions
+      def options_for_promotion_action_types(promotion_action, level)
+        actions = SolidusFriendlyPromotions.config.actions.select { _1.new.level == level.to_sym }
         options = actions.map { |action| [action.model_name.human, action.name] }
         options_for_select(options, promotion_action&.type&.to_s)
       end

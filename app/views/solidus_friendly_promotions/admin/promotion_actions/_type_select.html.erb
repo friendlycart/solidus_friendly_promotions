@@ -3,7 +3,7 @@
   <%= admin_hint t('solidus_friendly_promotions.adjustment_type'), t(:promotions, scope: [:solidus_friendly_promotions, :hints, "solidus_friendly_promotions/calculator"]) %>
   <%=
     form.select :type,
-      options_for_promotion_action_types(form.object),
+      options_for_promotion_action_types(form.object, level),
       {
         include_blank: t(:choose_promotion_action, scope: 'solidus_friendly_promotions')
       },
