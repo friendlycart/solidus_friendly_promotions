@@ -60,10 +60,20 @@ module SolidusFriendlyPromotions
       raise NotImplementedError
     end
 
+    def available_rules
+      relevant_rule_levels.flat_map do |level|
+        SolidusFriendlyPromotions.config.send("#{level}_rules").to_a
+      end.reject { |rule| rule.in? relevant_rules.map(&:class) }
+    end
+
     def relevant_rules
       promotion.rules.select do |rule|
-        rule.level.in?([:order, level].uniq)
+        rule.level.in?(relevant_rule_levels)
       end
+    end
+
+    def relevant_rule_levels
+      [:order, level].uniq
     end
 
     def available_calculators

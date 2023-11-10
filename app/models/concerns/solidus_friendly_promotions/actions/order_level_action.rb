@@ -18,6 +18,10 @@ module SolidusFriendlyPromotions
       def level
         self.class.level
       end
+
+      def relevant_rule_levels
+        [:order, :line_item]
+      end
     end
   end
 end

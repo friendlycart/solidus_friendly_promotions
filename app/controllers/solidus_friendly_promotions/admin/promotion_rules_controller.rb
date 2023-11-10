@@ -5,8 +5,8 @@ module SolidusFriendlyPromotions
     class PromotionRulesController < Spree::Admin::BaseController
       helper "spree/promotion_rules"
 
-      before_action :validate_level, only: [:new, :create]
       before_action :load_promotion, only: [:create, :destroy, :update, :new]
+      before_action :load_promotion_action, only: [:create, :new, :update]
       before_action :validate_promotion_rule_type, only: [:create]
 
       def new
@@ -57,14 +57,17 @@ module SolidusFriendlyPromotions
         @promotion = SolidusFriendlyPromotions::Promotion.find(params[:promotion_id])
       end
 
+      def load_promotion_action
+        @promotion_action = @promotion.actions.find(params[:promotion_action_id])
+      end
+
       def model_class
         SolidusFriendlyPromotions::PromotionRule
       end
 
       def validate_promotion_rule_type
         requested_type = params[:promotion_rule].delete(:type)
-        promotion_rule_types = SolidusFriendlyPromotions.config.send("#{@level}_rules")
-        @promotion_rule_type = promotion_rule_types.detect do |klass|
+        @promotion_rule_type = @promotion_action.available_rules.detect do |klass|
           klass.name == requested_type
         end
         return if @promotion_rule_type
@@ -88,17 +91,6 @@ module SolidusFriendlyPromotions
 
       def promotion_rule_params
         params[:promotion_rule].try(:permit!) || {}
-      end
-
-      def promotion_rule_types
-        case params[:level]
-        when "order"
-          SolidusFriendlyPromotions.config.order_rules
-        when "line_item"
-          SolidusFriendlyPromotions.config.line_item_rules
-        when "shipment"
-          SolidusFriendlyPromotions.config.shipment_rules
-        end
       end
     end
   end
