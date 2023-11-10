@@ -40,3 +40,8 @@ gemspec
 # We use `send` instead of calling `eval_gemfile` to work around an issue with
 # how Dependabot parses projects: https://github.com/dependabot/dependabot-core/issues/1658.
 send(:eval_gemfile, "Gemfile-local") if File.exist? "Gemfile-local"
+
+group :utils do
+  gem "standard", ">= 1.0", require: false
+  gem "rubocop", require: false
+end
