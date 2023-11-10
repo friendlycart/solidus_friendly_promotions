@@ -1,18 +1,12 @@
-# frozen_string_literal: true
-
 module SolidusFriendlyPromotions
   module Actions
-    module OrderLevelAction
+    module LineItemLevelAction
       extend ActiveSupport::Concern
 
       class_methods do
         def level
-          :order
+          :line_item
         end
-      end
-
-      def can_discount?(_)
-        false
       end
 
       def level
