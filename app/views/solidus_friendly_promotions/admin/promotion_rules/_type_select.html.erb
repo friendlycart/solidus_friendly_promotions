@@ -4,12 +4,16 @@
     url: solidus_friendly_promotions.new_admin_promotion_promotion_rule_path(@promotion),
     method: :get
   ) do |form| %>
-  <%= hidden_field_tag :level, @level %>
+  <%= hidden_field_tag :promotion_action_id, promotion_action.id %>
   <%= form.label :type %>
   <%= admin_hint SolidusFriendlyPromotions::PromotionRule.human_attribute_name(:type), t(:promotions, scope: [:solidus_friendly_promotions, :hints, "spree/calculator"]) %>
   <%=
     form.select :type,
-      options_for_promotion_rule_types(form.object, level),
+      options_for_select(
+        promotion_action.available_rules.map do |rule|
+          [rule.model_name.human, rule.name]
+        end
+      ),
       {
         include_blank: t(:choose_promotion_rule, scope: 'solidus_friendly_promotions')
       },

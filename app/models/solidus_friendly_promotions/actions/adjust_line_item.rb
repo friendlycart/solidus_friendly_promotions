@@ -3,12 +3,10 @@
 module SolidusFriendlyPromotions
   module Actions
     class AdjustLineItem < PromotionAction
+      include LineItemLevelAction
+
       def can_discount?(object)
         object.is_a? Spree::LineItem
-      end
-
-      def level
-        :line_item
       end
     end
   end

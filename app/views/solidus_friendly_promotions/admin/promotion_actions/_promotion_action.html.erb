@@ -25,5 +25,15 @@
         </div>
       </div>
     <% end %>
+
+    <fieldset>
+      <legend align="center"><%= t("action_rules", scope: :solidus_friendly_promotions) %></legend>
+
+      <%= render partial: 'solidus_friendly_promotions/admin/promotion_rules/promotion_rule', collection: promotion_action.relevant_rules, locals: { promotion_action: promotion_action } %>
+
+      <%= turbo_frame_tag @promotion, "new_promotion_action_rule" do %>
+        <%= link_to t(:add_rule, scope: :solidus_friendly_promotions), solidus_friendly_promotions.new_admin_promotion_promotion_rule_path(@promotion, promotion_action_id: promotion_action), class: 'btn btn-secondary' %>
+      <% end %>
+    </fieldset>
   </div>
 <% end %>
