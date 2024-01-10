@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+# require_relative 'friendly_promotion_adjuster/choose_discounts'
+# require_relative 'friendly_promotion_adjuster/discount_order'
+# require_relative 'friendly_promotion_adjuster/load_promotions'
+# require_relative 'friendly_promotion_adjuster/persist_discounted_order'
+
+# OR
+
+# Dir[File.join(__dir__, 'friendly_promotion_adjuster', '*.rb')].each { |file| require file }
+
 module SolidusFriendlyPromotions
   class FriendlyPromotionAdjuster
     attr_reader :order, :promotions, :dry_run
