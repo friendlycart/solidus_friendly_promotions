@@ -2,11 +2,13 @@
 
 module SolidusFriendlyPromotions
   class Promotion < Spree::Base
+    include Spree::SoftDeletable
+
     belongs_to :category, class_name: "SolidusFriendlyPromotions::PromotionCategory",
       foreign_key: :promotion_category_id, optional: true
     belongs_to :original_promotion, class_name: "Spree::Promotion", optional: true
     has_many :rules, class_name: "SolidusFriendlyPromotions::PromotionRule", dependent: :destroy
-    has_many :actions, class_name: "SolidusFriendlyPromotions::PromotionAction", dependent: :nullify
+    has_many :actions, class_name: "SolidusFriendlyPromotions::PromotionAction", dependent: :destroy
     has_many :codes, class_name: "SolidusFriendlyPromotions::PromotionCode", dependent: :destroy
     has_many :code_batches, class_name: "SolidusFriendlyPromotions::PromotionCodeBatch", dependent: :destroy
     has_many :order_promotions, class_name: "SolidusFriendlyPromotions::OrderPromotion", dependent: :destroy
@@ -49,7 +51,7 @@ module SolidusFriendlyPromotions
 
     self.allowed_ransackable_associations = ["codes"]
     self.allowed_ransackable_attributes = %w[name customer_label path promotion_category_id lane updated_at]
-    self.allowed_ransackable_scopes = %i[active]
+    self.allowed_ransackable_scopes = %i[active with_discarded]
 
     # All orders that have been discounted using this promotion
     def discounted_orders
