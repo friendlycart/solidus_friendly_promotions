@@ -163,6 +163,17 @@ RSpec.describe SolidusFriendlyPromotions::Promotion, type: :model do
         expect(subject.errors).to include(:apply_automatically)
       end
     end
+
+    context "when the promotion has a code" do
+      before do
+        subject.codes.new(value: "foo")
+      end
+
+      it "cannot be changed to true" do
+        expect { subject.apply_automatically = true }.to change { subject.valid? }.from(true).to(false)
+        expect(subject.errors.full_messages).to include("Apply automatically cannot be set to true when promotion code is present")
+      end
+    end
   end
 
   describe "#usage_limit_exceeded?" do
@@ -529,7 +540,7 @@ RSpec.describe SolidusFriendlyPromotions::Promotion, type: :model do
   # admin form posts the code and path as empty string
   describe "normalize blank values for path" do
     it "will save blank value as nil value instead" do
-      promotion = Spree::Promotion.create(name: "A promotion", path: "")
+      promotion = SolidusFriendlyPromotions::Promotion.create(name: "A promotion", customer_label: "nice", path: "")
       expect(promotion.path).to be_nil
     end
   end

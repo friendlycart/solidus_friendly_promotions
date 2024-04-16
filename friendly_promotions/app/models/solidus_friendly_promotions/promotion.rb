@@ -19,6 +19,9 @@ module SolidusFriendlyPromotions
     validates :per_code_usage_limit, numericality: {greater_than_or_equal_to: 0, allow_nil: true}
     validates :description, length: {maximum: 255}
     validate :apply_automatically_disallowed_with_paths
+    validate :apply_automatically_disallowed_with_promotion_codes
+
+    before_save :normalize_blank_values
 
     scope :active, ->(time = Time.current) { has_actions.started_and_unexpired(time) }
     scope :advertised, -> { where(advertise: true) }
@@ -165,10 +168,20 @@ module SolidusFriendlyPromotions
 
     private
 
+    def normalize_blank_values
+      self[:path] = nil if self[:path].blank?
+    end
+
     def apply_automatically_disallowed_with_paths
       return unless apply_automatically
 
       errors.add(:apply_automatically, :disallowed_with_path) if path.present?
+    end
+
+    def apply_automatically_disallowed_with_promotion_codes
+      return unless apply_automatically
+
+      errors.add(:apply_automatically, :disallowed_with_promotion_codes) if codes.present?
     end
   end
 end
