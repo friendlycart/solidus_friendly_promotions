@@ -6,7 +6,7 @@ module SolidusFriendlyPromotions
       before_action :load_data
 
       helper "solidus_friendly_promotions/admin/conditions"
-      helper "solidus_friendly_promotions/admin/promotion_actions"
+      helper "solidus_friendly_promotions/admin/benefits"
       helper "solidus_friendly_promotions/admin/promotions"
 
       def create
@@ -46,7 +46,7 @@ module SolidusFriendlyPromotions
       end
 
       def promotion_includes
-        [:actions]
+        [:benefits]
       end
 
       def model_class
