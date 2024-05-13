@@ -56,7 +56,7 @@ module SolidusFriendlyPromotions
     end
 
     def to_partial_path
-      "solidus_friendly_promotions/admin/benefit_forms/#{model_name.element}"
+      "solidus_friendly_promotions/admin/benefit_fields/#{model_name.element}"
     end
 
     def level
@@ -68,7 +68,7 @@ module SolidusFriendlyPromotions
     end
 
     def available_calculators
-      SolidusFriendlyPromotions.config.promotion_calculators[self.class] || (raise NotImplementedError)
+      SolidusFriendlyPromotions.config.promotion_calculators[self.class] || []
     end
 
     def eligible_by_applicable_conditions?(promotable, dry_run: false)
@@ -105,11 +105,11 @@ module SolidusFriendlyPromotions
       end
     end
 
-    private
-
     def possible_conditions
       Set.new(SolidusFriendlyPromotions.config.order_conditions)
     end
+
+    private
 
     def raise_for_adjustments_for_completed_orders
       if adjustments.joins(:order).merge(Spree::Order.complete).any?
