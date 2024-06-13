@@ -1,5 +1,20 @@
 # Changelog
 
+## [v1.9.0](https://github.com/friendlycart/solidus_friendly_promotions/tree/v1.9.0) (2024-06-13)
+
+[Full Changelog](https://github.com/friendlycart/solidus_friendly_promotions/compare/v1.0.1...v1.9.0)
+
+**Merged pull requests:**
+
+- Documentation updates [\#116](https://github.com/friendlycart/solidus_friendly_promotions/pull/116) ([mamhoff](https://github.com/mamhoff))
+- Fix homepage path in gemspec [\#115](https://github.com/friendlycart/solidus_friendly_promotions/pull/115) ([pelargir](https://github.com/pelargir))
+- Use Bootstrap cards for admin UI [\#114](https://github.com/friendlycart/solidus_friendly_promotions/pull/114) ([mamhoff](https://github.com/mamhoff))
+- Rename promotion actions to benefits [\#113](https://github.com/friendlycart/solidus_friendly_promotions/pull/113) ([mamhoff](https://github.com/mamhoff))
+- Include Discarded Promotions [\#112](https://github.com/friendlycart/solidus_friendly_promotions/pull/112) ([manleyac](https://github.com/manleyac))
+- Rename promotion rules to conditions [\#111](https://github.com/friendlycart/solidus_friendly_promotions/pull/111) ([mamhoff](https://github.com/mamhoff))
+- Rules per action [\#110](https://github.com/friendlycart/solidus_friendly_promotions/pull/110) ([mamhoff](https://github.com/mamhoff))
+- Promotion advertiser [\#109](https://github.com/friendlycart/solidus_friendly_promotions/pull/109) ([mamhoff](https://github.com/mamhoff))
+
 ## [v1.0.1](https://github.com/friendlycart/solidus_friendly_promotions/tree/v1.0.1) (2024-05-07)
 
 [Full Changelog](https://github.com/friendlycart/solidus_friendly_promotions/compare/v1.0.0...v1.0.1)
