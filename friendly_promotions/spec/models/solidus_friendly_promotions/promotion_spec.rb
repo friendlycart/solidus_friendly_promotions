@@ -24,7 +24,7 @@ RSpec.describe SolidusFriendlyPromotions::Promotion, type: :model do
 
     subject { promotion.destroy! }
 
-    it "destroys the promotion and nullifies the benefit" do
+    it "destroys the promotion and deletes the benefit" do
       expect { subject }.to change { SolidusFriendlyPromotions::Promotion.count }.by(-1)
       expect(SolidusFriendlyPromotions::Benefit.count).to be_zero
     end
@@ -39,6 +39,72 @@ RSpec.describe SolidusFriendlyPromotions::Promotion, type: :model do
 
       it "raises an error" do
         expect { subject }.to raise_exception(ActiveRecord::RecordNotDestroyed)
+      end
+    end
+
+    context "when the promotion has been added to an incomplete order" do
+      let!(:promotion) { create(:friendly_promotion, :with_adjustable_benefit) }
+      let(:order) { create(:order) }
+
+      before do
+        order.friendly_promotions << promotion
+      end
+
+      it "destroys the connection" do
+        expect { subject }.to change(SolidusFriendlyPromotions::OrderPromotion, :count).by(-1)
+      end
+    end
+  end
+
+  describe "#discard" do
+    let!(:promotion) { create(:friendly_promotion, :with_adjustable_benefit, apply_automatically: true) }
+
+    subject { promotion.discard! }
+
+    it "discards the promotion and keeps the benefit" do
+      expect { subject }.to change { SolidusFriendlyPromotions::Promotion.count }.by(-1)
+    end
+
+    it "keeps the benefit" do
+      expect { subject }.not_to change(SolidusFriendlyPromotions::Benefit, :count)
+    end
+
+    context "when the promotion has been applied to a complete order" do
+      let(:order) { create(:order_ready_to_complete) }
+
+      before do
+        order.recalculate
+        order.complete!
+      end
+
+      it "does not complain" do
+        expect { subject }.not_to raise_exception
+      end
+    end
+
+    context "when the promotion has been added to an incomplete order" do
+      let!(:promotion) { create(:friendly_promotion, :with_adjustable_benefit) }
+      let(:order) { create(:order) }
+
+      before do
+        order.friendly_promotions << promotion
+      end
+
+      it "destroys the connection" do
+        expect { subject }.to change(SolidusFriendlyPromotions::OrderPromotion, :count).by(-1)
+      end
+    end
+
+    context "when the promotion has been added to a complete order" do
+      let!(:promotion) { create(:friendly_promotion, :with_adjustable_benefit) }
+      let(:order) { create(:order_ready_to_ship) }
+
+      before do
+        order.friendly_promotions << promotion
+      end
+
+      it "keeps the connection" do
+        expect { subject }.not_to change(SolidusFriendlyPromotions::OrderPromotion, :count)
       end
     end
   end
@@ -144,7 +210,7 @@ RSpec.describe SolidusFriendlyPromotions::Promotion, type: :model do
   end
 
   describe "#apply_automatically" do
-    subject { build(:friendly_promotion) }
+    subject { create(:friendly_promotion) }
 
     it "defaults to false" do
       expect(subject.apply_automatically).to eq(false)
