@@ -10,16 +10,6 @@ module SolidusFriendlyPromotions
       base.has_many :friendly_promotions, through: :friendly_order_promotions, source: :promotion
     end
 
-    def ensure_promotions_eligible
-      Spree::Config.promotion_adjuster_class.new(self).call
-      if promo_total_changed?
-        restart_checkout_flow
-        recalculate
-        errors.add(:base, I18n.t("solidus_friendly_promotions.promotion_total_changed_before_complete"))
-      end
-      errors.empty?
-    end
-
     def discountable_item_total
       line_items.sum(&:discountable_amount)
     end
@@ -34,14 +24,6 @@ module SolidusFriendlyPromotions
     # order benefits handle their discounts themselves.
     def discountable_line_items
       line_items.reject(&:managed_by_order_benefit)
-    end
-
-    def apply_shipping_promotions
-      if Spree::Config.promotion_adjuster_class <= SolidusFriendlyPromotions::FriendlyPromotionAdjuster
-        recalculate
-      else
-        super
-      end
     end
 
     def free_from_order_benefit?(line_item, _options)
