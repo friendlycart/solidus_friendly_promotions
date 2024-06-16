@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require "rails_helper"
 
-feature "Promotion Code Batches", partial_double_verification: false do
+RSpec.feature "Promotion Code Batches", partial_double_verification: false do
   stub_authorization!
 
   describe "create" do

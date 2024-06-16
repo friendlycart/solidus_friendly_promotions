@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require "rails_helper"
 
-describe "Admin::Conditions", type: :request do
+RSpec.describe "Admin::Conditions", type: :request do
   let!(:promotion) { create(:friendly_promotion, :with_adjustable_benefit) }
   let(:benefit) { promotion.benefits.first }
 
