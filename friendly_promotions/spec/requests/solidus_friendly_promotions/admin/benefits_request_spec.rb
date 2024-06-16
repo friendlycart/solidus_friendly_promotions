@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require "rails_helper"
 
-describe "Admin::Benefits", type: :request do
+RSpec.describe "Admin::Benefits", type: :request do
   stub_authorization!
 
   let!(:promotion) { create(:friendly_promotion) }
