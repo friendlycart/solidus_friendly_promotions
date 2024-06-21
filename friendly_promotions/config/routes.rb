@@ -1,6 +1,23 @@
 # frozen_string_literal: true
 
 SolidusFriendlyPromotions::Engine.routes.draw do
+  if SolidusSupport.admin_available?
+    require "solidus_admin/admin_resources"
+    extend SolidusAdmin::AdminResources
+
+    constraints(->(request) {
+                  request.cookies["solidus_admin"] == "true" ||
+                    request.params["solidus_admin"] == "true" ||
+                    SolidusFriendlyPromotions.config.use_new_admin?
+                }) do
+      scope :admin do
+        scope :friendly do
+          admin_resources :promotion_categories, only: [:index, :destroy]
+          admin_resources :promotions, only: [:index, :destroy]
+        end
+      end
+    end
+  end
   if SolidusSupport.backend_available?
     namespace :admin do
       scope :friendly do
