@@ -6,6 +6,12 @@ RSpec.describe SolidusFriendlyPromotions::Conditions::LineItemProduct, type: :mo
   let(:condition) { described_class.new(condition_options) }
   let(:condition_options) { {} }
 
+  describe "#preload_relations" do
+    subject { condition.preload_relations }
+
+    it { is_expected.to eq([:products]) }
+  end
+
   describe "#eligible?(line_item)" do
     subject { condition.eligible?(line_item, {}) }
 
