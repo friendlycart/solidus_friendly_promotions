@@ -40,6 +40,10 @@ Dir["#{__dir__}/support/**/*.rb"].sort.each { |f| require f }
 # See: lib/solidus_friendly_promotions/testing_support/factories.rb
 SolidusDevSupport::TestingSupport::Factories.load_for(SolidusFriendlyPromotions::Engine)
 
+Spree::Config.order_contents_class = "SolidusFriendlyPromotions::SimpleOrderContents"
+Spree::Config.promotion_adjuster_class = "SolidusFriendlyPromotions::FriendlyPromotionAdjuster"
+Spree::Config.coupon_code_handler_class = "SolidusFriendlyPromotions::PromotionHandler::Coupon"
+
 RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.use_transactional_fixtures = true
