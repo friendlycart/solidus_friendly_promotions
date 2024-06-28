@@ -29,7 +29,6 @@ Dir["#{__dir__}/support/**/*.rb"].sort.each { |f| require f }
 
 require "solidus_friendly_promotions"
 
-
 RSpec.configure do |config|
   config.disable_monkey_patching!
   config.color = true
