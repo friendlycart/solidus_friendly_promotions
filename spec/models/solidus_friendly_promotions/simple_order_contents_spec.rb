@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require "rails_helper"
 
 RSpec.describe SolidusFriendlyPromotions::SimpleOrderContents, type: :model do
   subject(:order_contents) { described_class.new(order) }

@@ -20,6 +20,12 @@ module SolidusFriendlyPromotions
       app.config.assets.precompile << "solidus_friendly_promotions/manifest.js"
     end
 
+    initializer "solidus_promotions.spree_config", after: "spree.load_config_initializers" do
+      Rails.application.config.to_prepare do
+        Spree::Order.line_item_comparison_hooks << :free_from_order_benefit?
+      end
+    end
+
     initializer "solidus_friendly_promotions.importmap" do |app|
       SolidusFriendlyPromotions.importmap.draw(Engine.root.join("config", "importmap.rb"))
 
