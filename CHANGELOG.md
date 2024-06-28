@@ -1,11 +1,17 @@
 # Changelog
 
-## [v1.9.0](https://github.com/friendlycart/solidus_friendly_promotions/tree/v1.9.0) (2024-06-13)
+## [v1.9.1](https://github.com/friendlycart/solidus_friendly_promotions/tree/v1.9.1) (2024-06-28)
 
-[Full Changelog](https://github.com/friendlycart/solidus_friendly_promotions/compare/v1.0.1...v1.9.0)
+[Full Changelog](https://github.com/friendlycart/solidus_friendly_promotions/compare/v1.9.0...v1.9.1)
 
 **Merged pull requests:**
 
+- Fix specs after solidus merges [\#132](https://github.com/friendlycart/solidus_friendly_promotions/pull/132) ([mamhoff](https://github.com/mamhoff))
+- Use ActiveRecord::Migration\[7.0\] [\#131](https://github.com/friendlycart/solidus_friendly_promotions/pull/131) ([mamhoff](https://github.com/mamhoff))
+- Split rails\_helper and spec\_helper [\#126](https://github.com/friendlycart/solidus_friendly_promotions/pull/126) ([mamhoff](https://github.com/mamhoff))
+- Use single-file dummy app from Solidus core [\#124](https://github.com/friendlycart/solidus_friendly_promotions/pull/124) ([mamhoff](https://github.com/mamhoff))
+- Allow Turbo 2.x, but fix its issues [\#122](https://github.com/friendlycart/solidus_friendly_promotions/pull/122) ([mamhoff](https://github.com/mamhoff))
+- Miscellaneous spec fixes [\#121](https://github.com/friendlycart/solidus_friendly_promotions/pull/121) ([mamhoff](https://github.com/mamhoff))
 - Documentation updates [\#116](https://github.com/friendlycart/solidus_friendly_promotions/pull/116) ([mamhoff](https://github.com/mamhoff))
 - Fix homepage path in gemspec [\#115](https://github.com/friendlycart/solidus_friendly_promotions/pull/115) ([pelargir](https://github.com/pelargir))
 - Use Bootstrap cards for admin UI [\#114](https://github.com/friendlycart/solidus_friendly_promotions/pull/114) ([mamhoff](https://github.com/mamhoff))
@@ -14,6 +20,10 @@
 - Rename promotion rules to conditions [\#111](https://github.com/friendlycart/solidus_friendly_promotions/pull/111) ([mamhoff](https://github.com/mamhoff))
 - Rules per action [\#110](https://github.com/friendlycart/solidus_friendly_promotions/pull/110) ([mamhoff](https://github.com/mamhoff))
 - Promotion advertiser [\#109](https://github.com/friendlycart/solidus_friendly_promotions/pull/109) ([mamhoff](https://github.com/mamhoff))
+
+## [v1.9.0](https://github.com/friendlycart/solidus_friendly_promotions/tree/v1.9.0) (2024-06-13)
+
+[Full Changelog](https://github.com/friendlycart/solidus_friendly_promotions/compare/v1.0.1...v1.9.0)
 
 ## [v1.0.1](https://github.com/friendlycart/solidus_friendly_promotions/tree/v1.0.1) (2024-05-07)
 
