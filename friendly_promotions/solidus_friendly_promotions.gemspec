@@ -30,11 +30,12 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "solidus_core", [">= 4.0.0", "< 4.4"]
   spec.add_dependency "solidus_support", "~> 0.5"
-  spec.add_dependency "turbo-rails", "~> 1.4"
+  spec.add_dependency "turbo-rails", ">= 1.4"
   spec.add_dependency "stimulus-rails", "~> 1.2"
   spec.add_dependency "importmap-rails", "~> 1.2"
   spec.add_dependency "ransack-enum", "~> 1.0"
   spec.add_development_dependency "rspec-activemodel-mocks", "~> 1.0"
+  spec.add_development_dependency "rspec-retry"
   spec.add_development_dependency "shoulda-matchers", "~> 5.3"
   spec.add_development_dependency "solidus_dev_support", "~> 2.6"
   spec.add_development_dependency "standard", "~> 1.31"

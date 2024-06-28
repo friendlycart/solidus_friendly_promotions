@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require "rails_helper"
 
-describe "Promotion Categories", type: :system do
+RSpec.describe "Promotion Categories", type: :system do
   stub_authorization!
 
   context "index" do
