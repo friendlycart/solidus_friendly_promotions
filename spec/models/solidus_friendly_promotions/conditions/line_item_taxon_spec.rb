@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require "rails_helper"
 
 RSpec.describe SolidusFriendlyPromotions::Conditions::LineItemTaxon, type: :model do
   let(:taxon) { create :taxon, name: "first" }
@@ -12,6 +12,12 @@ RSpec.describe SolidusFriendlyPromotions::Conditions::LineItemTaxon, type: :mode
 
   let(:condition) do
     described_class.create!(benefit: benefit)
+  end
+
+  describe "#preload_relations" do
+    subject { condition.preload_relations }
+
+    it { is_expected.to eq([:taxons]) }
   end
 
   describe "#eligible?" do

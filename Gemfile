@@ -26,6 +26,8 @@ when "postgresql"
 else
   gem "sqlite3", "~> 1.3"
 end
+# Fix for Ruby 3.3.3 packaging bug
+gem "net-pop", github: "ruby/net-pop"
 
 gemspec
 

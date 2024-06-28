@@ -1,18 +1,24 @@
 # frozen_string_literal: true
 
-# Configure Rails Environment
-ENV["RAILS_ENV"] = "test"
+if ENV["COVERAGE"]
+  require "simplecov"
+  if ENV["COVERAGE_DIR"]
+    SimpleCov.coverage_dir(ENV["COVERAGE_DIR"])
+  end
+  SimpleCov.command_name("solidus:core")
+  SimpleCov.merge_timeout(3600)
+  SimpleCov.start("rails")
+end
 
-# Run Coverage report
-require "solidus_dev_support/rspec/coverage"
+require "rspec/core"
 
-# Create the dummy app if it's still missing.
-dummy_env = "#{__dir__}/dummy/config/environment.rb"
-system "bin/rake extension:test_app" unless File.exist? dummy_env
-require dummy_env
+require "spree/testing_support/flaky"
+require "spree/testing_support/partial_double_verification"
+require "spree/testing_support/silence_deprecations"
+require "spree/testing_support/preferences"
+require "spree/core"
+require "spree/config"
 
-# Requires factories and other useful helpers defined in spree_core.
-require "solidus_dev_support/rspec/feature_helper"
 require "shoulda-matchers"
 # Explicitly load activemodel mocks
 require "rspec-activemodel-mocks"
@@ -21,20 +27,26 @@ require "rspec-activemodel-mocks"
 # in spec/support/ and its subdirectories.
 Dir["#{__dir__}/support/**/*.rb"].sort.each { |f| require f }
 
-# Requires factories defined in Solidus core and this extension.
-# See: lib/solidus_friendly_promotions/testing_support/factories.rb
-SolidusDevSupport::TestingSupport::Factories.load_for(SolidusFriendlyPromotions::Engine)
+require "solidus_friendly_promotions"
 
 RSpec.configure do |config|
-  config.infer_spec_type_from_file_location!
-  config.use_transactional_fixtures = true
-
-  config.include SolidusFriendlyPromotions::Engine.routes.url_helpers, type: :request
-end
-
-Shoulda::Matchers.configure do |config|
-  config.integrate do |with|
-    with.test_framework :rspec
-    with.library :rails
+  config.disable_monkey_patching!
+  config.color = true
+  config.expect_with :rspec do |c|
+    c.syntax = :expect
   end
+  config.mock_with :rspec do |c|
+    c.syntax = :expect
+  end
+
+  config.include Spree::TestingSupport::Preferences
+
+  config.filter_run focus: true
+  config.run_all_when_everything_filtered = true
+
+  config.example_status_persistence_file_path = "./spec/examples.txt"
+
+  config.order = :random
+
+  Kernel.srand config.seed
 end

@@ -4,10 +4,6 @@
 Spree::Config.order_contents_class = "SolidusFriendlyPromotions::SimpleOrderContents"
 Spree::Config.promotion_adjuster_class = "SolidusFriendlyPromotions::FriendlyPromotionAdjuster"
 
-Rails.application.config.to_prepare do |config|
-  Spree::Order.line_item_comparison_hooks << :free_from_order_benefit?
-end
-
 # Replace the promotions menu from core with ours
 Spree::Backend::Config.configure do |config|
   config.menu_items = config.menu_items.map do |item|
@@ -60,72 +56,5 @@ Spree::Backend::Config.configure do |config|
 end
 
 SolidusFriendlyPromotions.configure do |config|
-  # This class chooses which promotion should apply to a line item in case
-  # that more than one promotion is eligible.
-  config.discount_chooser_class = "SolidusFriendlyPromotions::FriendlyPromotionAdjuster::ChooseDiscounts"
-
-  # How many promotions should be displayed on the index page in the admin.
-  config.promotions_per_page = 25
-
-  config.promotion_calculators = SolidusFriendlyPromotions::NestedClassSet.new(
-    "SolidusFriendlyPromotions::Benefits::AdjustShipment" => [
-      "SolidusFriendlyPromotions::Calculators::FlatRate",
-      "SolidusFriendlyPromotions::Calculators::FlexiRate",
-      "SolidusFriendlyPromotions::Calculators::Percent",
-      "SolidusFriendlyPromotions::Calculators::TieredFlatRate",
-      "SolidusFriendlyPromotions::Calculators::TieredPercent",
-      "SolidusFriendlyPromotions::Calculators::TieredPercentOnEligibleItemQuantity"
-    ],
-    "SolidusFriendlyPromotions::Benefits::AdjustLineItem" => [
-      "SolidusFriendlyPromotions::Calculators::DistributedAmount",
-      "SolidusFriendlyPromotions::Calculators::FlatRate",
-      "SolidusFriendlyPromotions::Calculators::FlexiRate",
-      "SolidusFriendlyPromotions::Calculators::Percent",
-      "SolidusFriendlyPromotions::Calculators::TieredFlatRate",
-      "SolidusFriendlyPromotions::Calculators::TieredPercent",
-      "SolidusFriendlyPromotions::Calculators::TieredPercentOnEligibleItemQuantity"
-    ],
-    "SolidusFriendlyPromotions::Benefits::AdjustLineItemQuantityGroups" => [
-      "SolidusFriendlyPromotions::Calculators::FlatRate",
-      "SolidusFriendlyPromotions::Calculators::Percent",
-      "SolidusFriendlyPromotions::Calculators::TieredPercentOnEligibleItemQuantity"
-    ],
-    "SolidusFriendlyPromotions::Benefits::CreateDiscountedItem" => [
-      "SolidusFriendlyPromotions::Calculators::FlatRate",
-      "SolidusFriendlyPromotions::Calculators::Percent",
-      "SolidusFriendlyPromotions::Calculators::TieredPercentOnEligibleItemQuantity"
-    ]
-  )
-
-  config.order_conditions = [
-    "SolidusFriendlyPromotions::Conditions::FirstOrder",
-    "SolidusFriendlyPromotions::Conditions::FirstRepeatPurchaseSince",
-    "SolidusFriendlyPromotions::Conditions::ItemTotal",
-    "SolidusFriendlyPromotions::Conditions::DiscountedItemTotal",
-    "SolidusFriendlyPromotions::Conditions::MinimumQuantity",
-    "SolidusFriendlyPromotions::Conditions::NthOrder",
-    "SolidusFriendlyPromotions::Conditions::OneUsePerUser",
-    "SolidusFriendlyPromotions::Conditions::OptionValue",
-    "SolidusFriendlyPromotions::Conditions::Product",
-    "SolidusFriendlyPromotions::Conditions::Store",
-    "SolidusFriendlyPromotions::Conditions::Taxon",
-    "SolidusFriendlyPromotions::Conditions::UserLoggedIn",
-    "SolidusFriendlyPromotions::Conditions::UserRole",
-    "SolidusFriendlyPromotions::Conditions::User"
-  ]
-  config.line_item_conditions = [
-    "SolidusFriendlyPromotions::Conditions::LineItemOptionValue",
-    "SolidusFriendlyPromotions::Conditions::LineItemProduct",
-    "SolidusFriendlyPromotions::Conditions::LineItemTaxon"
-  ]
-  config.shipment_conditions = [
-    "SolidusFriendlyPromotions::Conditions::ShippingMethod"
-  ]
-
-  config.actions = [
-    "SolidusFriendlyPromotions::Benefits::AdjustLineItem",
-    "SolidusFriendlyPromotions::Benefits::AdjustLineItemQuantityGroups",
-    "SolidusFriendlyPromotions::Benefits::AdjustShipment",
-    "SolidusFriendlyPromotions::Benefits::CreateDiscountedItem"
-  ]
+  # Add your custom configuration here
 end
