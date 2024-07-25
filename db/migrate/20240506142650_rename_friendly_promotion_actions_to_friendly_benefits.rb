@@ -10,8 +10,8 @@ class RenameFriendlyPromotionActionsToFriendlyBenefits < ActiveRecord::Migration
     execute(update_benefit_type_sql)
     update_adjustment_source_type_sql = <<~SQL
       UPDATE spree_adjustments
-      SET source_type = REPLACE(source_type, 'SolidusFriendlyPromotions::Actions', 'SolidusFriendlyPromotions::Benefits')
-      WHERE source_type LIKE 'SolidusFriendlyPromotions::Actions%'
+      SET source_type = REPLACE(source_type, 'SolidusFriendlyPromotions::PromotionAction', 'SolidusFriendlyPromotions::Benefit')
+      WHERE source_type = 'SolidusFriendlyPromotions::PromotionAction'
     SQL
     execute(update_adjustment_source_type_sql)
   end
@@ -27,8 +27,8 @@ class RenameFriendlyPromotionActionsToFriendlyBenefits < ActiveRecord::Migration
     execute(update_benefit_type_sql)
     update_adjustment_source_type_sql = <<~SQL
       UPDATE spree_adjustments
-      SET source_type = REPLACE(source_type, 'SolidusFriendlyPromotions::Benefits', 'SolidusFriendlyPromotions::Actions')
-      WHERE source_type LIKE 'SolidusFriendlyPromotions::Benefits%'
+      SET source_type = REPLACE(source_type, 'SolidusFriendlyPromotions::Benefit', 'SolidusFriendlyPromotions::PromotionAction')
+      WHERE source_type = 'SolidusFriendlyPromotions::Benefit'
     SQL
     execute(update_adjustment_source_type_sql)
   end
